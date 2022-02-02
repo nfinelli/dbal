@@ -155,7 +155,13 @@ abstract class AbstractSchemaManager
             $database = $this->_conn->getDatabase();
         }
 
-        $sql = $this->_platform->getListTableColumnsSQL($table, $database);
+        $version = $this->_conn->fetchAll('SELECT version()');
+        preg_match('/[0-9]{1,}\.[0-9]{1,}/', $version[0]['version'], $version);
+        if(is_array($version) && floatval($version[0]) >= 12) {
+            $sql = $this->_platform->getListTableColumnsSQL12($table, $database);
+        } else {
+            $sql = $this->_platform->getListTableColumnsSQL($table, $database);
+        }
 
         $tableColumns = $this->_conn->fetchAll($sql);
 
