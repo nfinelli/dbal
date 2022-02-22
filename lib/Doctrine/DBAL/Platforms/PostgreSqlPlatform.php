@@ -383,7 +383,7 @@ class PostgreSqlPlatform extends AbstractPlatform
                         AND pg_index.indkey[0] = a.attnum
                         AND pg_index.indisprimary = 't'
                     ) AS pri,
-                    (SELECT pg_get_expr(d.adbin, d.adrelid)
+                    (SELECT pg_get_expr(adbin, adrelid)
                      FROM pg_attrdef
                      WHERE c.oid = pg_attrdef.adrelid
                         AND pg_attrdef.adnum=a.attnum
